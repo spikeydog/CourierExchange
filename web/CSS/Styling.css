@@ -1,0 +1,234 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 8, 2015, 12:47:51 AM
+    Author     : pooja
+*/
+
+html {
+    margin: 0;
+    padding: 0;
+    background: #eee9df url(../IMG/white.jpg) left top ;
+}
+body {
+    width: 1000px;
+    margin: 0 auto;
+   font: 10pt cursive, Arial, sans-serif;
+    color: #4A7023;
+    
+}
+
+.top
+{
+    height: 120px;
+}
+p
+{
+    background: center;
+}
+/*HTML 5 specific*/
+header,section,article,aside,footer{
+    display: block;
+}
+h1 {
+   font: 10pt cursive, Arial, sans-serif;
+    /*	background: url(../IMG/Capture.PNG);*/
+    background-size:   cover;                      /* <------ */
+    background-repeat: no-repeat;
+    text-align: left;
+    text-transform: uppercase;
+    color: #4A7023;
+
+}
+aside{
+    float: left;
+    width: 280px;
+    min-height: 480px;
+    background: url(../IMG/white.jpg) left top no-repeat;
+    margin: 0 0 20px 0;
+}
+section{
+    float: left;
+    width: 426px;
+    padding-left: 20px;
+  
+
+}
+footer{
+    clear:both !important;
+    width:1000px;
+    height: 50px;
+    padding: 10px;
+    color:#200f08 ;
+    background: url(../IMG/menu.png) left top no-repeat;
+    font: 10pt cursive, Arial, sans-serif;
+
+
+}
+.menu {
+    font:bold 10pt cursive, Arial, sans-serif;
+    display: block;
+    width: 950px;
+    height: 20px;
+    text-align: left;
+    color: #3366ff;
+    padding-top: 3px;
+    padding-bottom: 3px;
+   //background: #008B45;
+    border: solid 1px #666666;
+     background: url(../IMG/menu.png) left top repeat;
+}
+.nav ul { padding:0; margin:0; }
+.nav { display:block;
+      margin:0 auto 20px;
+      border:1px solid #222; 
+     position:relative;
+     background-color:#6a6a6a;
+     font: 16pt cursive, Arial, sans-serif;}
+//nav ul { padding:0; margin:0; }
+.li
+{
+    display:inline;
+}
+.ul{
+  
+    background-repeat: no-repeat;
+    background-position: 0px 5px; 
+    padding-left: 0 px; 
+}
+#navigation {
+	
+	font: bold 12px/18px "Helvetica Neue", Helvetica, Arial, sans-serif;
+	text-transform: uppercase;
+	color: #000000;
+}
+#navigation a {
+	//display: block;
+	
+	color: #000000;
+	text-decoration: none;
+	text-shadow: 0 1px #FFF;
+        }
+#side
+       {
+            background: #eee9df url(../IMG/white.jpg)
+       }
+        
+#side a {
+	display: block;
+	//padding: 3px 3px;
+	//color: #000000;
+	text-decoration: none;
+	text-shadow: 0 1px #FFF;
+        font: 10pt cursive, Arial, sans-serif;
+       // background: url(../IMG/Capture.PNG);
+       
+        background-size:   cover;                     
+        background-repeat: no-repeat;
+        text-align: left;
+        text-transform: uppercase;
+        color: #4A7023;
+        //height: 30px;
+        
+        
+    
+        //background: url(../IMG/menu.png) left top no-repeat;
+        
+        }
+        #SideBar
+        {
+            display: block;
+	//padding: 10px 15px;
+	color: #000000;
+	text-decoration: none;
+        }
+     
+.Category:hover ul {
+    display: block;
+}
+.Category ul {
+    top: 40px;
+  display: none;
+   // list-style-type: none;
+}​
+.Category li{
+    font: 15pt cursive, Arial, sans-serif;
+    //background: url(../IMG/Capture.PNG);
+    background-size:   cover;                     
+    background-repeat: no-repeat;
+    text-align: left;
+    text-transform: uppercase;
+    color: #4A7023;
+    
+}
+#gobutton
+{
+    background: url(../IMG/menu.png) left top no-repeat;
+}
+#Btn
+{
+    background: url(../IMG/basket.gif) left top no-repeat;   
+    width:122px;
+    height: 30px;
+}
+#Btn1
+{
+    background: url(../IMG/basket.gif) left top no-repeat;   
+    width:122px;
+    height: 30px;
+}
+#editCart
+{
+    background: url(../IMG/UpCart.gif) left top no-repeat;   
+    width:118px;
+    height: 30px;
+}
+#checkout
+{
+    background: url(../IMG/checkout.PNG) left top no-repeat;   
+    width:160px;
+    height: 50px;
+}
+#test
+{
+     background: url(../IMG/order.gif) left top no-repeat;   
+    width:118px;
+    height: 30px;
+}
+#test1
+{
+     background: url(../IMG/btn.png) left top no-repeat;   
+    width:200px;
+    height: 100px;
+}
+#breadCrumbs
+{
+      float: right;
+}
+#ContentTab
+{
+    color: #3366ff;
+    padding-top: 0px;
+    padding-bottom: 0px;
+   //background: #008B45;
+    //border: solid 1px #666666;
+    text-decoration: none;
+    text-shadow: 0 1px #FFF;
+    font: 10pt/1.5em Helvetica,"Helvetica neue", Arial, sans-serif;
+
+}
+#Footer
+{
+        
+      height:auto;
+          
+     // background-color: lime;
+      background: url(../IMG/menu.png) left top no-repeat;
+      bottom: 0;
+      left: 0;
+      position: relative;
+      right: 0;
+}
