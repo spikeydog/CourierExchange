@@ -11,7 +11,7 @@ package bidding.jsp;
  * 
  * @author sedog
  */
-public enum EditBid {
+public enum EditBidIO {
     // Request input parameter for the bid drop off time
     PARA_DROP_OFF_TIME("drop_off_time"),
     // Request input parameter for the bid pick up time
@@ -21,7 +21,7 @@ public enum EditBid {
     
     public final String name;
     
-    private EditBid (String name) {
+    private EditBidIO (String name) {
         this.name = name;
     }
 }
