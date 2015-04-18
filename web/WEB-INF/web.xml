@@ -4,9 +4,17 @@
         <servlet-name>BidEditor</servlet-name>
         <servlet-class>bidding.servlet.BidEditor</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BidLister</servlet-name>
+        <servlet-class>bidding.servlet.BidLister</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>BidEditor</servlet-name>
         <url-pattern>/BidEditor</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BidLister</servlet-name>
+        <url-pattern>/BidLister</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
