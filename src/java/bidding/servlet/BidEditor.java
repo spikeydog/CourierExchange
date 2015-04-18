@@ -90,7 +90,11 @@ public class BidEditor extends HttpServlet {
     
     /**
      * Handles some basic validation of HttpRequest parameters and casts 
-     * them into their proper data types.
+     * them into their proper data types. Sets appropriate error codes if any 
+     * of the given parameters are null, cannot be cast to the correct type, or
+     * are otherwise logically invalid.
+     * 
+     * @param request   the <code>HttpRequest</code> containing parameters
      */
     private class Parameters {
         private Timestamp dropOffTime;
@@ -109,27 +113,37 @@ public class BidEditor extends HttpServlet {
                     this.dropOffTime = Timestamp.valueOf(dropOffTime);
                 } catch (IllegalArgumentException ex) {
                     ex.printStackTrace();
-                    code = ExitCode.DROP_OFF_TIME_CAST_ERR;
+                    code = ExitCode.DROP_OFF_TIME_ERR;
                     throw new RuntimeException("Invalid");
                 }
+            } else {
+                code = ExitCode.DROP_OFF_TIME_ERR;
             }
             if (null != pickUpTime) {
                 try {
                     this.pickUpTime = Timestamp.valueOf(pickUpTime);
                 } catch (IllegalArgumentException ex) {
                     ex.printStackTrace();
-                    code = ExitCode.PICKUP_TIME_CAST_ERR;
+                    code = ExitCode.PICKUP_TIME_ERR;
                     throw new RuntimeException("Invalid");
                 }
+            } else {
+                code = ExitCode.PICKUP_TIME_ERR;
             }
             if (null != fee) {
                 try {
                     this.fee = Float.valueOf(dropOffTime);
+                    if (0 >= this.fee) {
+                        code = ExitCode.FEE_ERR;
+                        throw new RuntimeException("Invalid");
+                    }
                 } catch (IllegalArgumentException ex) {
                     ex.printStackTrace();
-                    code = ExitCode.FEE_CAST_ERR;
+                    code = ExitCode.FEE_ERR;
                     throw new RuntimeException("Invalid");
                 }
+            } else {
+                code = ExitCode.FEE_ERR;
             }
         }
     }
