@@ -10,7 +10,13 @@ import common.bidding.Bid;
 import common.bidding.BidCE;
 import common.bidding.BiddingServer;
 import common.bidding.Server;
+import common.delivery.DeliveryRequest;
+import common.delivery.DeliveryRequestCE;
+import common.user.User;
+import common.user.UserCE;
 import common.util.code.bidding.ExitCode;
+import static delivery.jsp.ViewDeliveryRequestDetailsIO.SESSION_BID;
+import static delivery.jsp.ViewDeliveryRequestDetailsIO.SESSION_DELIVERY;
 import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -19,6 +25,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -54,19 +61,32 @@ public class BidEditor extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("bid editor called");
-        String binding = "rmi://localhost:2222/" + Server.RMI_BINDING.name;
+        String binding = common.util.RMI.URL.path + Server.RMI_BINDING.name;
         try {
+            createTestData(request.getSession());
             Parameters params = new Parameters(request);
+            DeliveryRequest delivery = (DeliveryRequest) request.getSession()
+                    .getAttribute(SESSION_DELIVERY.name);
+            User user = (User) request.getSession().getAttribute("user");
+            
             // Hard-coding some stuff to test; this is really ugly.
             // This also does not work yet. Only produces failure.
             Bid bid = new BidCE();
             bid.setDropOffTime(new Timestamp(System.currentTimeMillis()));
             bid.setPickUpTime(params.pickUpTime);
             bid.setFee(params.fee);
-            bid.setCourierID(3);
-            bid.setDeliveryRequestID(22);
+            
+            bid.setCourierID(user.getUserID());
+            bid.setDeliveryRequestID(delivery.getDeliveryRequestID());
             BiddingServer server = (BiddingServer) Naming.lookup(binding);
-            code = server.placeBid(bid);
+            
+            if (null == request.getSession()
+                    .getAttribute(SESSION_BID.name)) {
+                code = server.placeBid(bid);
+            } else {
+                code = server.updateBid(bid);
+            }
+            
             
             response.getWriter().write(code.toString());
         } catch (RuntimeException ex) {
@@ -76,6 +96,16 @@ public class BidEditor extends HttpServlet {
         }
         
         
+    }
+    
+    private void createTestData(HttpSession session) {
+        User user = new UserCE();
+        user.setUserID(23);
+        user.setUserType(common.user.UserType.COURIER);
+        session.setAttribute("user", user);
+        DeliveryRequest delivery = new DeliveryRequestCE();
+        delivery.setDeliveryRequestID(23);
+        session.setAttribute(SESSION_DELIVERY.name, delivery);
     }
 
     /**
