@@ -9,7 +9,6 @@ import bidding.jsp.EditBidIO;
 import common.bidding.Bid;
 import common.bidding.BidCE;
 import common.bidding.BiddingServer;
-import common.bidding.Server;
 import common.delivery.DeliveryRequest;
 import common.delivery.DeliveryRequestCE;
 import common.user.User;
@@ -65,10 +64,12 @@ public class BidEditor extends HttpServlet {
         System.out.println("DEBUG:binding: " + binding);
         try {
             createTestData(request.getSession());
+            
             Parameters params = new Parameters(request);
             DeliveryRequest delivery = (DeliveryRequest) request.getSession()
                     .getAttribute(SESSION_DELIVERY.name);
             User user = (User) request.getSession().getAttribute("user");
+            Bid oldBid = (Bid) request.getSession().getAttribute(SESSION_BID.name);
             
             // Hard-coding some stuff to test; this is really ugly.
             // This also does not work yet. Only produces failure.
@@ -76,10 +77,19 @@ public class BidEditor extends HttpServlet {
             bid.setDropOffTime(new Timestamp(System.currentTimeMillis()));
             bid.setPickUpTime(params.pickUpTime);
             bid.setFee(params.fee);
-            
-            bid.setCourierID(user.getUserID());
-            bid.setDeliveryRequestID(delivery.getDeliveryRequestID());
+            bid.setBidID(oldBid.getBidID());
+        
             BiddingServer server = (BiddingServer) Naming.lookup("rmi://localhost:2222/biddingServer");
+            
+            // Need to programmically generate a correct update bid
+            
+            Bid staleBid = server.getBid(bid);
+            System.out.println(staleBid);
+            bid.setDropOffTime(staleBid.getDropOffTime());
+            bid.setPickUpTime(staleBid.getPickUpTime());
+            bid.setCourierID(staleBid.getCourierID());
+            bid.setDeliveryRequestID(staleBid.getDeliveryRequestID());
+            bid.setFee(staleBid.getFee() - (float) .5);
             
             if (null == request.getSession()
                     .getAttribute(SESSION_BID.name)) {
@@ -108,6 +118,9 @@ public class BidEditor extends HttpServlet {
         DeliveryRequest delivery = new DeliveryRequestCE();
         delivery.setDeliveryRequestID(23);
         session.setAttribute(SESSION_DELIVERY.name, delivery);
+        Bid bid = new BidCE();
+        bid.setBidID(13);
+        session.setAttribute(SESSION_BID.name, bid);
     }
 
     /**

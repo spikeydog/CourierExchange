@@ -8,6 +8,10 @@
         <servlet-name>BidLister</servlet-name>
         <servlet-class>bidding.servlet.BidLister</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BidAccepter</servlet-name>
+        <servlet-class>bidding.servlet.BidAccepter</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>BidEditor</servlet-name>
         <url-pattern>/BidEditor</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>BidLister</servlet-name>
         <url-pattern>/BidLister</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BidAccepter</servlet-name>
+        <url-pattern>/BidAccepter</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
