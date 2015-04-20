@@ -61,7 +61,8 @@ public class BidEditor extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("bid editor called");
-        String binding = common.util.RMI.URL.path + Server.RMI_BINDING.name;
+        String binding = common.util.RMI.URL.path + common.bidding.Server.RMI_BINDING.name;
+        System.out.println("DEBUG:binding: " + binding);
         try {
             createTestData(request.getSession());
             Parameters params = new Parameters(request);
@@ -78,7 +79,7 @@ public class BidEditor extends HttpServlet {
             
             bid.setCourierID(user.getUserID());
             bid.setDeliveryRequestID(delivery.getDeliveryRequestID());
-            BiddingServer server = (BiddingServer) Naming.lookup(binding);
+            BiddingServer server = (BiddingServer) Naming.lookup("rmi://localhost:2222/biddingServer");
             
             if (null == request.getSession()
                     .getAttribute(SESSION_BID.name)) {
@@ -93,6 +94,7 @@ public class BidEditor extends HttpServlet {
             
         } catch (NotBoundException ex) {
             System.out.println("RMI Server does not appear to be running");
+            ex.printStackTrace();
         }
         
         
