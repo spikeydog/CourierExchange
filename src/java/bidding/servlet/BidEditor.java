@@ -87,8 +87,7 @@ public class BidEditor extends HttpServlet {
             } else {
                 code = server.updateBid(bid);
             }
-            
-            
+
             response.getWriter().write(code.toString());
         } catch (RuntimeException ex) {
             

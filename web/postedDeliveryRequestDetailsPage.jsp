@@ -8,6 +8,7 @@
 <%@page import="common.delivery.DeliveryRequestCE"%>
 <%@page import="common.user.User"%>
 <%@page import="common.user.UserCE"%>
+<%@page import="common.bidding.Bid"%>
 <%@page import="common.user.UserType"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
@@ -24,9 +25,11 @@
     fakeUser.setUserID(23);
     fakeUser.setUserType(UserType.COURIER);
     session.setAttribute(ViewDeliveryRequestDetailsIO.SESSION_DELIVERY.name, fakeDR);
+    session.setAttribute("user", fakeUser);
     // Real code afterwards
     DeliveryRequest delivery = (DeliveryRequest) session.getAttribute(ViewDeliveryRequestDetailsIO.SESSION_DELIVERY.name);
     User user = (User) session.getAttribute("user");
+    Bid bid = (Bid) session.getAttribute(ViewDeliveryRequestDetailsIO.SESSION_BID.name);
 %>
 <!DOCTYPE html>
 <html>
@@ -117,21 +120,29 @@
                 </td>
             </tr>
             <tr>
-                <%! 
-                private String createButton(User user, ) {
-                    
-                }
-                    (UserType.COURIER == user.getUserType())? "<td><form action='BidLister' method='post'>"
-                    + "<input type='submit' value='Place Bid'/></form></td>" : 
-                %>
-                
                 <td>
-                    <form action="" method="post">
-                        <input type="submit" value="View Courier Profile"/>
-                    </form>
+                <%= createButton(user, !(null==bid)) %>
                 </td>
             </tr>
         </table>
         <br>
+        
+        <%! 
+            private String createButton(User user, boolean bidExists ) {
+                String s = null;
+                if (UserType.COURIER == user.getUserType()) {
+                    s = "<form action='BidEditor' method='post'>" +
+                    "<input type='submit' value='" 
+                    + (bidExists? "Update" : "Place") + " Bid'/>"
+                    + "</form>";
+                } else {
+                    s = "<form action='BidLister' method='post'>" +
+                    "<input type='submit' value='List Bids'" 
+                    + "</form>";
+                }
+                return s;
+            }
+
+            %>
     </body>
 </html>
