@@ -23,8 +23,8 @@
     fakeDR.setWeight((float) .25);
     User fakeUser = new UserCE();
     fakeUser.setUserID(23);
-    //fakeUser.setUserType(UserType.COURIER);
-    fakeUser.setUserType(UserType.CUSTOMER);
+    fakeUser.setUserType(UserType.COURIER);
+    //fakeUser.setUserType(UserType.CUSTOMER);
     session.setAttribute(ViewDeliveryRequestDetailsIO.SESSION_DELIVERY.name, fakeDR);
     session.setAttribute("user", fakeUser);
     // Real code afterwards
@@ -138,7 +138,7 @@
                     + "</form>";
                 } else {
                     s = "<form action='BidLister' method='post'>" +
-                    "<input type='submit' value='List Bids'" 
+                    "<input type='submit' value='List Bids'/>" 
                     + "</form>";
                 }
                 return s;

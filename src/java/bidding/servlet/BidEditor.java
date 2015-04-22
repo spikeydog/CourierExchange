@@ -14,6 +14,7 @@ import common.delivery.DeliveryRequestCE;
 import common.user.User;
 import common.user.UserCE;
 import common.util.code.bidding.ExitCode;
+import delivery.jsp.ViewDeliveryRequestDetailsIO;
 import static delivery.jsp.ViewDeliveryRequestDetailsIO.SESSION_BID;
 import static delivery.jsp.ViewDeliveryRequestDetailsIO.SESSION_DELIVERY;
 import java.io.IOException;
@@ -62,7 +63,7 @@ public class BidEditor extends HttpServlet {
             throws ServletException, IOException {
         System.out.println("bid editor called");
         String binding = common.util.RMI.URL.path + common.bidding.Server.RMI_BINDING.name;
-        RequestDispatcher dispatcher = request.getRequestDispatcher("ViewDeliveryRequestDetailsPage");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("ViewDeliveryRequestDetailsPage.jsp");
         
         try {
             Parameters params = new Parameters(request);
@@ -87,6 +88,9 @@ public class BidEditor extends HttpServlet {
             } else {
                 code = server.updateBid(bid);
             }
+            System.out.println("BidEditor code: " + code.toString());
+            Bid newBid = server.getBidByCourierIDDeliveryID(user, delivery);
+            request.getSession().setAttribute(ViewDeliveryRequestDetailsIO.SESSION_BID.name, newBid);
 
             response.getWriter().write(code.toString());
         } catch (RuntimeException ex) {
