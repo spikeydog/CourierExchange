@@ -9,9 +9,76 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Posted Delivery Request Details</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Posted Delivery Request Details</h1>
+        <table>
+            <tr>
+                <td>
+                    <label>Description</label>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Pick Up Address</label>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Drop Off Address</label>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Pick Up Time</label>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Drop Off Time</label>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Posted Time</label>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Package Weight</label>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Delivery ID</label>
+                </td>
+                <td>
+                    
+                </td>
+            </tr>
+            
+        </table>
     </body>
 </html>
