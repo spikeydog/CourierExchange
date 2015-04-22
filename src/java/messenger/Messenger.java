@@ -35,7 +35,7 @@ public class Messenger implements Sender, Receiver {
         System.out.println("DEBUG: messages" + messages);
         for (String m : messages) {
             if (SELF_DESTRUCT.equals(m)) {
-                this.receivers = null;
+                this.receivers.clear();
             }
             this.messagesReceived.add(m);
             System.out.println("received after update:" + messagesReceived);
