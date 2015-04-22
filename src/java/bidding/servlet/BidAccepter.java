@@ -20,6 +20,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -71,6 +72,7 @@ public class BidAccepter extends HttpServlet {
         HttpSession session = request.getSession();
         int index;
         ExitCode code = null;
+        RequestDispatcher dispatcher = request.getRequestDispatcher("inProgressDeliveryRequestDetailsPage.jsp");
         
         try {
             bidServer = (BiddingServer) Naming.lookup(bidBinding);
@@ -78,7 +80,7 @@ public class BidAccepter extends HttpServlet {
             System.out.println("A server is not bound");
         }
         
-        createFakeData(session); // DEBUG
+        //createFakeData(session); // DEBUG
         index = Integer.valueOf(request.getParameter(AcceptBidIO.PARA_BID_LIST_INDEX.name));
         bids = (List<Bid>) session.getAttribute(ListBidsIO.SESSION_BID_LIST.name);
         bid = bids.get(index);
@@ -98,6 +100,9 @@ public class BidAccepter extends HttpServlet {
         if (ExitCode.SUCCESS == code) {
             ServletContext context = request.getSession().getServletContext();
             bindMessengers(bid, delivery, request.getSession());
+            response.getWriter().write(code.toString()); // DEBUG
+        } else {
+            response.getWriter().write(code.toString()); // DEBUG
         }
     }
     
@@ -138,5 +143,4 @@ public class BidAccepter extends HttpServlet {
         session.setAttribute(ListBidsIO.SESSION_BID_LIST.name, list);
         session.setAttribute(ViewDeliveryRequestDetailsIO.SESSION_DELIVERY.name, dr);
     }
-
 }

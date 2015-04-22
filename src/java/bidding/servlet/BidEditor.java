@@ -63,7 +63,7 @@ public class BidEditor extends HttpServlet {
         String binding = common.util.RMI.URL.path + common.bidding.Server.RMI_BINDING.name;
         System.out.println("DEBUG:binding: " + binding);
         try {
-            createTestData(request.getSession());
+            //createTestData(request.getSession());
             
             Parameters params = new Parameters(request);
             DeliveryRequest delivery = (DeliveryRequest) request.getSession()
@@ -74,22 +74,12 @@ public class BidEditor extends HttpServlet {
             // Hard-coding some stuff to test; this is really ugly.
             // This also does not work yet. Only produces failure.
             Bid bid = new BidCE();
-            bid.setDropOffTime(new Timestamp(System.currentTimeMillis()));
+            bid.setDropOffTime(params.dropOffTime);
             bid.setPickUpTime(params.pickUpTime);
             bid.setFee(params.fee);
             bid.setBidID(oldBid.getBidID());
         
             BiddingServer server = (BiddingServer) Naming.lookup("rmi://localhost:2222/biddingServer");
-            
-            // Need to programmically generate a correct update bid
-            
-            Bid staleBid = server.getBid(bid);
-            System.out.println(staleBid);
-            bid.setDropOffTime(staleBid.getDropOffTime());
-            bid.setPickUpTime(staleBid.getPickUpTime());
-            bid.setCourierID(staleBid.getCourierID());
-            bid.setDeliveryRequestID(staleBid.getDeliveryRequestID());
-            bid.setFee(staleBid.getFee() - (float) .5);
             
             if (null == request.getSession()
                     .getAttribute(SESSION_BID.name)) {
@@ -151,6 +141,7 @@ public class BidEditor extends HttpServlet {
                     .PARA_DROP_OFF_TIME.name);
             String pickUpTime = (String) request.getAttribute(EditBidIO
                     .PARA_PICKUP_TIME.name);
+            System.out.println("DEBUG: " + pickUpTime);
             String fee = (String) request.getAttribute(EditBidIO
                     .PARA_FEE.name);
             if (null != dropOffTime) {

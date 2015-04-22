@@ -13,7 +13,8 @@ package bidding.jsp;
  */
 public enum ListBidsIO {
     // Session attribute populated with the returned list
-    SESSION_BID_LIST("bids");
+    SESSION_BID_LIST("bids"),
+    PARA_BIDS_LIST_INDEX("index");
     
     public final String name;
     
