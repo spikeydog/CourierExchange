@@ -20,11 +20,15 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import messenger.Directory;
+import messenger.Hub;
+import messenger.Messenger;
 
 /**
  *
@@ -58,8 +62,9 @@ public class BidAccepter extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("bid accepter called");
-        String binding = common.util.RMI.URL.path + common.bidding.Server.RMI_BINDING.name;
-        BiddingServer server = null;
+        String bidBinding = common.util.RMI.URL.path + common.bidding.Server.RMI_BINDING.name;
+        BiddingServer bidServer = null;
+        //UserServer userServer = null;
         List<Bid> bids = null;
         Bid bid = null;
         DeliveryRequest delivery = null;
@@ -68,12 +73,12 @@ public class BidAccepter extends HttpServlet {
         ExitCode code = null;
         
         try {
-            server = (BiddingServer) Naming.lookup(binding);
+            bidServer = (BiddingServer) Naming.lookup(bidBinding);
         } catch (NotBoundException ex) {
-            System.out.println("Bidding server not bound to " + binding);
+            System.out.println("A server is not bound");
         }
         
-        createFakeData(session);
+        createFakeData(session); // DEBUG
         index = Integer.valueOf(request.getParameter(AcceptBidIO.PARA_BID_LIST_INDEX.name));
         bids = (List<Bid>) session.getAttribute(ListBidsIO.SESSION_BID_LIST.name);
         bid = bids.get(index);
@@ -84,12 +89,33 @@ public class BidAccepter extends HttpServlet {
         System.out.println(null == delivery? "DEBUG: null session delivery" : delivery);
         
         try {
-            code = server.acceptBid(delivery, bid);
+            code = bidServer.acceptBid(delivery, bid);
         } catch (RemoteException ex) {
             System.out.println("RMI call failed");
         }
         
-        System.out.println(code.toString());
+        // If successful, create and bind messenger objects to the users
+        if (ExitCode.SUCCESS == code) {
+            ServletContext context = request.getSession().getServletContext();
+            bindMessengers(bid, delivery, request.getSession());
+        }
+    }
+    
+    private void bindMessengers(Bid bid, DeliveryRequest delivery, 
+            HttpSession session) {
+        ServletContext context = session.getServletContext();
+        Directory directory = (Directory) context.getAttribute("directory");
+        Integer courierID = bid.getCourierID();
+        Integer customerID = delivery.getCustomerID();
+        Hub courierHub = directory.get(courierID);
+        Hub customerHub = directory.get(customerID);
+        Messenger courierMsg = new Messenger();
+        Messenger customerMsg = new Messenger();
+        
+        courierMsg.registerReceiver(customerMsg);
+        customerMsg.registerReceiver(courierMsg);
+        courierHub.add(courierID, courierMsg);
+        customerHub.add(customerID, customerMsg);
     }
 
     /**

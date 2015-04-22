@@ -29,7 +29,6 @@ public class BidLister extends HttpServlet {
     // The exit code used by this servlet to handle output messages
     private ExitCode code = ExitCode.FAILURE;
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -76,7 +75,7 @@ public class BidLister extends HttpServlet {
                 System.out.println(bid.toString());
             }
         } else {
-            System.out.println("bids null");
+            System.out.println("No bids have been placed on this Delivery Request");
         }
     }
 

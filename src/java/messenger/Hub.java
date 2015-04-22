@@ -18,7 +18,7 @@ import java.util.Set;
  * @author sedog
  */
 public class Hub {
-    Map<String,Messenger> messengers = new HashMap<String,Messenger>();
+    Map<Integer,Messenger> messengers = new HashMap<Integer,Messenger>();
     
     /**
      * This method maps a new messenger into this <code>Hub</code> using the
@@ -27,20 +27,20 @@ public class Hub {
      * @param username      the username to act as the map key
      * @param messenger     <code>Messenger</code> to map to <code>username</code>
      */
-    public void add(final String username, final Messenger messenger) {
-        this.messengers.put(username, messenger);
+    public void add(final int userID, final Messenger messenger) {
+        this.messengers.put(userID, messenger);
     }
     
-    public Messenger get(String username) {
-        return this.messengers.get(username);
+    public Messenger get(final Integer userID) {
+        return this.messengers.get(userID);
     }
     
     /**
      * This method unmaps an existing messenger from this <code>Hub</code>
      * @param username  the key to unmap 
      */
-    public void remove(final String username) {
-        this.messengers.remove(username);
+    public void remove(final Integer userID) {
+        this.messengers.remove(userID);
     }
     
     /**
@@ -49,8 +49,8 @@ public class Hub {
      * the system.
      */
     public void destroy() {
-        Set<String> keys = messengers.keySet();
-        for (String key : keys) {
+        Set<Integer> keys = messengers.keySet();
+        for (Integer key : keys) {
             messengers.get(key).selfDestruct();
         }
     }
@@ -63,8 +63,8 @@ public class Hub {
      * @param username  the unique username of the recipient
      * @param message   the message to send
      */
-    public void sendMessage(String username, String message) {
-        this.messengers.get(username).send(message);
+    public void sendMessage(final Integer userID, final String message) {
+        this.messengers.get(userID).send(message);
     }
     
     /**
@@ -73,8 +73,8 @@ public class Hub {
      * @param username the unique username of the sender
      * @return <code>List&#60String&#62</code>
      */
-    public List<String> receiveMessages(String username) {
-        Messenger messenger = this.messengers.get(username);
+    public List<String> receiveMessages(final Integer userID) {
+        Messenger messenger = this.messengers.get(userID);
         return messenger.receiveMessages();
     }
 }

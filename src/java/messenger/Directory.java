@@ -5,10 +5,7 @@
  */
 package messenger;
 
-import common.user.User;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,7 +13,7 @@ import java.util.Map;
  * @author sedog
  */
 public class Directory {
-    private static Map<String,Hub> directory = new HashMap<String, Hub>();
+    private static Map<Integer,Hub> directory = new HashMap<Integer, Hub>();
     private static Directory instance = null;
     
     private Directory() {}
@@ -38,8 +35,8 @@ public class Directory {
      * @param username  the username of the user to get the Hub for
      * @return Hub
      */
-    public static Hub get(String username) {
-        return directory.get(username);
+    public static Hub get(Integer userID) {
+        return directory.get(userID);
     }
     
     /**
@@ -47,8 +44,8 @@ public class Directory {
      * @param username  the username of the user to map <code>hub</come> to
      * @param hub  the <cod>Hub</code> to be mapped to <code>username</code>
      */
-    public static void add(String username, Hub hub) {
-        directory.put(username, hub);
+    public static void add(Integer userID, Hub hub) {
+        directory.put(userID, hub);
     }
     
     /**
@@ -57,8 +54,8 @@ public class Directory {
      * 
      * @param username  the username of the user to unmap a Hub of
      */
-    public static void remove(String username) {
-        directory.get(username).destroy();
-        directory.remove(username);
+    public static void remove(Integer userID) {
+        directory.get(userID).destroy();
+        directory.remove(userID);
     }
 }
