@@ -54,13 +54,15 @@
                 String rco = ro + co;
                 List<Bid> bids = (List<Bid>) session.getAttribute(ListBidsIO.SESSION_BID_LIST.name);
                 StringBuilder scribe = new StringBuilder();
+                int i = 0;
                 for (Bid bid : bids) {
                     scribe.append(rc).append(formatTime(bid.getPickUpTime()))
                             .append(coc).append(formatTime(bid.getDropOffTime()))
                             .append(coc).append(String.valueOf(bid.getFee()))
                             .append(coc).append("<form action='BidAccepter'><input type='submit' value='Accept Bid'/>")
                             .append("<input type='hidden' name='").append(AcceptBidIO.PARA_BID_LIST_INDEX.name).append("' value='")
-                            .append(String.valueOf(bid.getBidID())).append("'/></form>").append(coro);
+                            .append(String.valueOf(i)).append("'/></form>").append(coro);
+                    i++;
                     
                 }
                 return scribe.toString();

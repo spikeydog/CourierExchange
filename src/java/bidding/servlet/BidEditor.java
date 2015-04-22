@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.sql.Timestamp;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -61,28 +62,27 @@ public class BidEditor extends HttpServlet {
             throws ServletException, IOException {
         System.out.println("bid editor called");
         String binding = common.util.RMI.URL.path + common.bidding.Server.RMI_BINDING.name;
-        System.out.println("DEBUG:binding: " + binding);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("ViewDeliveryRequestDetailsPage");
+        
         try {
-            //createTestData(request.getSession());
-            
             Parameters params = new Parameters(request);
             DeliveryRequest delivery = (DeliveryRequest) request.getSession()
                     .getAttribute(SESSION_DELIVERY.name);
             User user = (User) request.getSession().getAttribute("user");
             Bid oldBid = (Bid) request.getSession().getAttribute(SESSION_BID.name);
             
-            // Hard-coding some stuff to test; this is really ugly.
-            // This also does not work yet. Only produces failure.
+            // Create a new bid out of the parameters
             Bid bid = new BidCE();
             bid.setDropOffTime(params.dropOffTime);
             bid.setPickUpTime(params.pickUpTime);
             bid.setFee(params.fee);
-            bid.setBidID(oldBid.getBidID());
+            bid.setCourierID(user.getUserID());
+            bid.setDeliveryRequestID(delivery.getDeliveryRequestID());
+            bid.setBidID((null == bid)? BidCE.DEFAULT_BID_ID : oldBid.getBidID());
         
-            BiddingServer server = (BiddingServer) Naming.lookup("rmi://localhost:2222/biddingServer");
+            BiddingServer server = (BiddingServer) Naming.lookup(binding);
             
-            if (null == request.getSession()
-                    .getAttribute(SESSION_BID.name)) {
+            if (null == oldBid) {
                 code = server.placeBid(bid);
             } else {
                 code = server.updateBid(bid);
@@ -96,7 +96,7 @@ public class BidEditor extends HttpServlet {
             ex.printStackTrace();
         }
         
-        
+        dispatcher.forward(request, response);
     }
     
     private void createTestData(HttpSession session) {
