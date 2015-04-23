@@ -61,70 +61,79 @@ public class BidEditor extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("bid editor called");
-        String binding = common.util.RMI.URL.path + common.bidding.Server.RMI_BINDING.name;
-        RequestDispatcher dispatcher = request.getRequestDispatcher("ViewDeliveryRequestDetailsPage.jsp");
+        // URL to the bound RMI server
+        String binding = common.util.RMI.URL.path + common.bidding.Server
+                .RMI_BINDING.name;
+        // The bidding server to handle our request 
+        BiddingServer server = null;
+        // Request dispatcher to forward the request after processing
+        RequestDispatcher dispatcher = request.getRequestDispatcher(
+                "postedDeliveryRequestDetailsPage.jsp");
+        // Encapsulated input parameters
+        Parameters params = new Parameters(request);
+        // Encapsulated session attributes
+        Attributes attr = new Attributes(request.getSession());
+        // The bid that will be inserted or updated
+        Bid bid = createBid(params, attr);
+        // The bid after being inserted into the database (fully populated)
+        Bid newBid = null;
+        
+        System.out.println("DEBUG: bid editor called");
         
         try {
-            Parameters params = new Parameters(request);
-            DeliveryRequest delivery = (DeliveryRequest) request.getSession()
-                    .getAttribute(SESSION_DELIVERY.name);
-            User user = (User) request.getSession().getAttribute("user");
-            Bid oldBid = (Bid) request.getSession().getAttribute(SESSION_BID.name);
-            
-            // Create a new bid out of the parameters
-            Bid bid = new BidCE();
-            bid.setDropOffTime(params.dropOffTime);
-            bid.setPickUpTime(params.pickUpTime);
-            bid.setFee(params.fee);
-            bid.setCourierID(user.getUserID());
-            bid.setDeliveryRequestID(delivery.getDeliveryRequestID());
-            bid.setBidID((null == bid)? BidCE.DEFAULT_BID_ID : oldBid.getBidID());
-        
-            BiddingServer server = (BiddingServer) Naming.lookup(binding);
-            
-            if (null == oldBid) {
-                code = server.placeBid(bid);
-            } else {
-                code = server.updateBid(bid);
-            }
-            System.out.println("BidEditor code: " + code.toString());
-            Bid newBid = server.getBidByCourierIDDeliveryID(user, delivery);
-            request.getSession().setAttribute(ViewDeliveryRequestDetailsIO.SESSION_BID.name, newBid);
-
-            response.getWriter().write(code.toString());
-        } catch (RuntimeException ex) {
-            
+            server = (BiddingServer) Naming.lookup(binding);
         } catch (NotBoundException ex) {
             System.out.println("RMI Server does not appear to be running");
             ex.printStackTrace();
         }
+        // Insert if no session Bid; update otherwise.
+        if (null == attr.bid) {
+            code = server.placeBid(bid);
+        } else {
+            code = server.updateBid(bid);
+        }
         
+        System.out.println("DEBUG: BidEditor code: " + code.toString());
+        newBid = server.getBidByCourierIDDeliveryID(attr.courier, attr.delivery);
+        System.out.println(newBid==null? "newbid is null :( ": "");
+        request.getSession().setAttribute(ViewDeliveryRequestDetailsIO
+                .SESSION_BID.name, newBid);
+
         dispatcher.forward(request, response);
     }
     
-    private void createTestData(HttpSession session) {
-        User user = new UserCE();
-        user.setUserID(23);
-        user.setUserType(common.user.UserType.COURIER);
-        session.setAttribute("user", user);
-        DeliveryRequest delivery = new DeliveryRequestCE();
-        delivery.setDeliveryRequestID(23);
-        session.setAttribute(SESSION_DELIVERY.name, delivery);
+    private Bid createBid(Parameters params, Attributes attr) {
         Bid bid = new BidCE();
-        bid.setBidID(13);
-        session.setAttribute(SESSION_BID.name, bid);
+        bid.setDropOffTime(params.dropOffTime);
+        bid.setPickUpTime(params.pickUpTime);
+        bid.setFee(params.fee);
+        bid.setCourierID(attr.courier.getUserID());
+        bid.setDeliveryRequestID(attr.delivery.getDeliveryRequestID());
+        bid.setBidID((null == attr.bid)? BidCE.DEFAULT_BID_ID : attr.bid.getBidID());
+        
+        return bid;
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+    
+    private class Attributes {
+        private User courier;
+        private DeliveryRequest delivery;
+        private Bid bid;
+        
+        private Attributes(HttpSession session) {
+            this.courier = (User) session.getAttribute("user");
+            this.bid = (Bid) session.getAttribute(ViewDeliveryRequestDetailsIO
+                    .SESSION_BID.name);
+            this.delivery = (DeliveryRequest) session.getAttribute(
+                    ViewDeliveryRequestDetailsIO.SESSION_DELIVERY.name);
+            
+            if (null == courier) {
+                code = ExitCode.FAILURE;
+                throw new RuntimeException("null courier");
+            } else if (null == delivery) {
+                code = ExitCode.REQ_NULL;
+            }
+        }
+    }
     
     /**
      * Handles some basic validation of HttpRequest parameters and casts 
