@@ -8,6 +8,7 @@ package rating.servlet;
 import common.rating.Rating;
 import common.rating.RatingCE;
 import common.rating.*;
+import common.util.code.rating.ExitCode;
 import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -34,14 +35,14 @@ public class InsertRating extends HttpServlet {
             throws ServletException, IOException {
         System.out.println("bid editor called");
         String binding = "rmi://localhost:2222/ratingServer";// + Server.RMI_BINDING.name;
-        Rating rating = null;
+        ExitCode code = null;
         
         try {
             Parameters params = new Parameters(request);
             // Hard-coding some stuff to test; this is really ugly.
             // This also does not work yet. Only produces failure.
             RatingServer server = (RatingServer) Naming.lookup(binding);
-            rating = server.insertRating(params.rating);
+            code = server.insertRating(params.rating);
             
         } catch (RuntimeException ex) {
             
