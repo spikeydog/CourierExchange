@@ -8,7 +8,6 @@ package rating.servlet;
 import common.rating.Rating;
 import common.rating.RatingCE;
 import common.rating.*;
-import common.util.code.rating.ExitCode;
 import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -33,16 +32,20 @@ public class InsertRating extends HttpServlet {
     
      protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("bid editor called");
-        String binding = "rmi://localhost:2222/ratingServer";// + Server.RMI_BINDING.name;
-        ExitCode code = null;
+        System.out.println("In Ratings Servlet");
+        String binding = "rmi://127.0.0.1:2222/" + Server.RMI_BINDING.name;
+        System.out.println("Printing the binding path"+binding);
+        
+        //String binding = common.util.RMI.URL.path+Server.RMI_BINDING.name;
+        Rating rating2 = null;
         
         try {
             Parameters params = new Parameters(request);
+            System.out.println("From Parameters,Rating ID is"+params.rating.getRatingID());
             // Hard-coding some stuff to test; this is really ugly.
             // This also does not work yet. Only produces failure.
             RatingServer server = (RatingServer) Naming.lookup(binding);
-            code = server.insertRating(params.rating);
+           //System.out.println( server.insertRating(params.rating) );
             
         } catch (RuntimeException ex) {
             
@@ -55,9 +58,12 @@ public class InsertRating extends HttpServlet {
 private class Parameters {
         private Rating rating;        
         public Parameters(HttpServletRequest request) {
-            Rating rating = new RatingCE();
+            this.rating = new RatingCE();
             rating.setRatingID(60);
             rating.setDeliveryRequestID(1000);
+            rating.setCustomerDeliveryPersonRating(10);
+            rating.setCustomerOverallRating(1);
+            rating.setCustomerProfesionalismRating(1);
                     //(Rating) request.getSession()            .getAttribute(insertRating);
             if (null != rating) {
                 // Nothing to do here

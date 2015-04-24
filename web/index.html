@@ -11,6 +11,20 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        <form action="" onclick="foo(this.date, this.time)">
+            <input name="date" type="date" />
+            <input name="time" type="time" />
+            <input id="datetime" name="datetime" type="text"/>
+            <input type="submit" value="click me" />
+        </form>
+        <script>
+            function foo(date, time) {
+                var string = date.value + " " + time.value;
+                var datetime = new Date(string);
+                var millis = datetime.getTime();
+                document.getElementById("datetime").value = millis;
+            }
+        </script>
         <div> </div>
     </body>
 </html>

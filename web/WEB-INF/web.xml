@@ -13,13 +13,49 @@
         <servlet-class>bidding.servlet.BidAccepter</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>messengerTest</servlet-name>
-        <servlet-class>messenger.messengerTest</servlet-class>
+        <servlet-name>
+            register
+        </servlet-name>
+        <servlet-class>
+            user.servlet.register
+        </servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewMetrics</servlet-name>
+        <servlet-class>metrics.servlet.ViewMetrics</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TravellingTimeServlet</servlet-name>
+        <servlet-class>travellingTime.servlet.TravellingTimeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MessengerTest</servlet-name>
+        <servlet-class>messenger.MessengerTest</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SendMessage</servlet-name>
         <servlet-class>messenger.SendMessage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateDeliveryRequest</servlet-name>
+        <servlet-class>delivery.servlet.CreateDeliveryRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>userController</servlet-name>
+        <servlet-class>user.servlet.UserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>chngPassword</servlet-name>
+        <servlet-class>user.servlet.chngPassword</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>
+            register
+        </servlet-name>
+        <url-pattern>
+            /register
+        </url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BidEditor</servlet-name>
         <url-pattern>/BidEditor</url-pattern>
@@ -33,16 +69,41 @@
         <url-pattern>/BidAccepter</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>messengerTest</servlet-name>
-        <url-pattern>/messengerTest</url-pattern>
+        <servlet-name>ViewMetrics</servlet-name>
+        <url-pattern>/ViewMetrics</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TravellingTimeServlet</servlet-name>
+        <url-pattern>/TravellingTimeServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MessengerTest</servlet-name>
+        <url-pattern>/MessengerTest</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SendMessage</servlet-name>
         <url-pattern>/SendMessage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateDeliveryRequest</servlet-name>
+        <url-pattern>/CreateDeliveryRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>userController</servlet-name>
+        <url-pattern>/userController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>chngPassword</servlet-name>
+        <url-pattern>/chngPassword</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <welcome-file-list>
+        <welcome-file>
+            index.jsp
+        </welcome-file>
+    </welcome-file-list>
 </web-app>
