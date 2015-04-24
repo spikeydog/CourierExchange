@@ -23,8 +23,8 @@
     fakeDR.setWeight((float) .25);
     User fakeUser = new UserCE();
     fakeUser.setUserID(23);
-    fakeUser.setUserType(UserType.COURIER);
-    //fakeUser.setUserType(UserType.CUSTOMER);
+    // fakeUser.setUserType(UserType.COURIER);
+    fakeUser.setUserType(UserType.CUSTOMER);
     session.setAttribute(ViewDeliveryRequestDetailsIO.SESSION_DELIVERY.name, fakeDR);
     session.setAttribute("user", fakeUser);
     // Real code afterwards
