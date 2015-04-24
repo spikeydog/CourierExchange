@@ -7,6 +7,7 @@ package messenger;
 import common.user.User;
 import common.user.UserCE;
 import java.io.IOException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -53,5 +54,7 @@ public class MessengerTest extends HttpServlet {
         Directory.add(uname,new Hub());
         request.getSession().setAttribute("hub",Directory.get(uname));
         request.getSession().setAttribute("user", user);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("out.jsp");
+        dispatcher.forward(request,response);
     }
 }

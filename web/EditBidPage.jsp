@@ -10,16 +10,6 @@
 <%@page import="common.delivery.DeliveryRequestCE"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    DeliveryRequest fakeDR = new DeliveryRequestCE();
-    fakeDR.setDescription("Presentation DVD");
-    fakeDR.setPickUpTime(new java.sql.Timestamp(System.currentTimeMillis()));
-    fakeDR.setDropOffTime(new java.sql.Timestamp(System.currentTimeMillis()));
-    fakeDR.setPostTime(new java.sql.Timestamp(System.currentTimeMillis()));
-    fakeDR.setPickUpAddress("123 Oak Street San Francisco");
-    fakeDR.setDropOffAddress("345 Maple Lane San Francisco");
-    fakeDR.setWeight((float) .25);
-    session.setAttribute(ViewDeliveryRequestDetailsIO.SESSION_DELIVERY.name, fakeDR);
-    // Real code afterwards
     Bid bid = (Bid) session.getAttribute(ViewDeliveryRequestDetailsIO.SESSION_BID.name);
     DeliveryRequest delivery = (DeliveryRequest) session.getAttribute(ViewDeliveryRequestDetailsIO.SESSION_DELIVERY.name);
     

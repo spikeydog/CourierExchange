@@ -4,6 +4,7 @@
     Author     : sedog
 --%>
 <%@page import="delivery.jsp.ViewDeliveryRequestDetailsIO"%>
+<%@page import="java.sql.Timestamp"%>
 <%@page import="common.delivery.DeliveryRequest"%>
 <%@page import="common.delivery.DeliveryRequestCE"%>
 <%@page import="common.user.User"%>
@@ -13,17 +14,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     DeliveryRequest fakeDR = new DeliveryRequestCE();
-    fakeDR.setDeliveryRequestID(23);
+    fakeDR.setDeliveryRequestID(4);
     fakeDR.setDescription("Presentation DVD");
-    fakeDR.setPickUpTime(new java.sql.Timestamp(System.currentTimeMillis()));
-    fakeDR.setDropOffTime(new java.sql.Timestamp(System.currentTimeMillis()));
-    fakeDR.setPostTime(new java.sql.Timestamp(System.currentTimeMillis()));
+    fakeDR.setPickUpTime(Timestamp.valueOf("2015-04-24 18:00:00"));
+    fakeDR.setDropOffTime(Timestamp.valueOf("2015-04-24 18:30:00"));
+    fakeDR.setPostTime(Timestamp.valueOf("2015-04-24 17:00:00"));
     fakeDR.setPickUpAddress("123 Oak Street San Francisco");
     fakeDR.setDropOffAddress("345 Maple Lane San Francisco");
     fakeDR.setWeight((float) .25);
     User fakeUser = new UserCE();
-    fakeUser.setUserID(23);
-    // fakeUser.setUserType(UserType.COURIER);
+    fakeUser.setUserID(2);
+    //fakeUser.setUserType(UserType.COURIER);
     fakeUser.setUserType(UserType.CUSTOMER);
     session.setAttribute(ViewDeliveryRequestDetailsIO.SESSION_DELIVERY.name, fakeDR);
     session.setAttribute("user", fakeUser);
